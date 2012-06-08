@@ -1,0 +1,54 @@
+/*
+
+Foundation Icons font family 
+
+ more information: http://www.zurb.com/playground/foundation-icons
+
+*/
+
+/* Foundation Icons general */
+@font-face {
+  font-family: 'FoundationIconsGeneral';
+  src: url('../lib/fonts/foundation-glyphs/foundation-icons-general.eot');
+  src: url('../lib/fonts/foundation-glyphs/foundation-icons-general.eot?#iefix') format('embedded-opentype'),
+       url('../lib/fonts/foundation-glyphs/foundation-icons-general.woff') format('woff'),
+       url('../lib/fonts/foundation-glyphs/foundation-icons-general.ttf') format('truetype'),
+       url('../lib/fonts/foundation-glyphs/foundation-icons-general.svg#FoundationIconsGeneral') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Foundation Icons General Enclosed */
+@font-face {
+    font-family: 'FoundationIconsGeneralEnclosed';
+    src: url('../lib/fonts/foundation-glyphs/foundation-icons-general-enclosed.eot');
+    src: url('../lib/fonts/foundation-glyphs/foundation-icons-general-enclosed.eot?#iefix') format('embedded-opentype'),
+         url('../lib/fonts/foundation-glyphs/foundation-icons-general-enclosed.woff') format('woff'),
+         url('../lib/fonts/foundation-glyphs/foundation-icons-general-enclosed.ttf') format('truetype'),
+         url('../lib/fonts/foundation-glyphs/foundation-icons-general-enclosed.svg#FoundationIconsGeneralEnclosed') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Foundation Icons Social */
+@font-face {
+    font-family: 'FoundationIconsSocial';
+    src: url('../lib/fonts/foundation-glyphs/foundation-icons-social.eot');
+    src: url('../lib/fonts/foundation-glyphs/foundation-icons-social.eot?#iefix') format('embedded-opentype'),
+         url('../lib/fonts/foundation-glyphs/foundation-icons-social.woff') format('woff'),
+         url('../lib/fonts/foundation-glyphs/foundation-icons-social.ttf') format('truetype'),
+         url('../lib/fonts/foundation-glyphs/foundation-icons-social.svg#FoundationIconsSocial') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+.glyph.general { font-family: "FoundationIconsGeneral"; }
+.glyph.social { font-family: "FoundationIconsSocial"; }
+.glyph.enclosed { font-family: "FoundationIconsGeneralEnclosed"; }
+
+h1 .glyph, 
+h2 .glyph, 
+h3 .glyph,
+h4 .glyph,
+h6 .glyph {  }

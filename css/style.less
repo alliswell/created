@@ -1,0 +1,921 @@
+/* 
+Theme Name: Created
+Theme URI: http://lessmade.com/created-theme
+Description: A responsive theme built off of ZURB's Foundation framework for the creation of awesome websites. 
+Author: Jared Erickson
+Author URI: http://jarederickson.com
+Version: 1.0
+*/
+
+
+/* 
+
+	Compiled using LESS. 
+	.Less styles located in themes directory /css/style.less 
+	(more info about less: http://lesscss.org/) 
+	
+*/
+
+// layout
+	@max-container-width: 1170px;
+	@mobile-side-padding: 20px;
+	
+	
+// brand colors	
+	@dark: #101010;
+	@dark-grey: #454545;
+	@grey: #686868;
+	@light-grey: #999;
+	@off-white: #f0f0f0;
+	@white: #fff;
+	@secondary: #00A6FC; //blue
+	@accent-color: #BF680F; //orange
+	@base-color: #111111;
+	
+	@border-color: #ddd;
+
+// fonts and typography	
+	@serif: Georgia, serif;
+	@sans:  "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	@webfont: 'Open Sans', helvetica, sans-serif;
+	
+	@baseline: 1.5;
+	//body fonts
+	@text-tiny: 11px;
+	@text-small: 14px;
+	@text-med: 16px;
+	@text-big: 24px;
+	@text-huge: 36px;
+	
+	.letter-spaced(@spacing: 2px) {
+		letter-spacing: @spacing;
+	}
+	
+// mixens
+
+	.margin-bottom(@margin: 40px) {
+		margin-bottom: @margin;
+	}
+	
+	.padding-vert(@top: 20px, @bottom: 20px ) {
+		padding: @top 0 @bottom 0;
+	}
+	
+	.padding-hor(@right: 20px, @left: 20px) {
+		padding: 0 @right 0 @left;
+	}
+	
+	.opacity(@opacity: 0.8) {
+	  -moz-opacity: @opacity;
+	  -khtml-opacity: @opacity;
+	  -webkit-opacity: @opacity;
+	  opacity: @opacity;
+  }
+ 
+  .drop-shadow(@x-axis: 0, @y-axis: 1px, @blur: 8px, @alpha: 0.2) {
+	  -webkit-box-shadow: @x-axis @y-axis @blur rgba(0, 0, 0, @alpha);
+	  -moz-box-shadow: @x-axis @y-axis @blur rgba(0, 0, 0, @alpha);
+	  box-shadow: @x-axis @y-axis @blur rgba(0, 0, 0, @alpha);
+  }
+
+// container borders
+
+ 	.border(@color: @border-color) {
+	 	border: 1px solid @color;
+  }
+  
+  .border-top-bottom(@border-top: @border-color, @border-bottom: @border-color) {
+	  border-top: 1px solid @border-top;
+	  border-bottom: 1px solid @border-bottom;
+	  border-left-width: 0;
+	  border-right-width: 0;
+  }
+ 	 
+  .rounded(@radius: 5px) {
+	  -webkit-border-radius: @radius;
+	  -moz-border-radius: @radius;
+	  border-radius: @radius;
+	  -moz-background-clip: padding; -webkit-background-clip: padding-box; background-clip: padding-box; 
+  }
+	
+	.border-radius(@topleft: 10px, @topright: 10px, @bottomright: 0, @bottomleft: 0) {
+	  -webkit-border-top-right-radius: @topright;
+	  -webkit-border-bottom-right-radius: @bottomright;
+	  -webkit-border-bottom-left-radius: @bottomleft;
+	  -webkit-border-top-left-radius: @topleft;
+	  -moz-border-radius-topright: @topright;
+	  -moz-border-radius-bottomright: @bottomright;
+	  -moz-border-radius-bottomleft: @bottomleft;
+	  -moz-border-radius-topleft: @topleft;
+	  border-top-right-radius: @topright;
+	  border-bottom-right-radius: @bottomright;
+	  border-bottom-left-radius: @bottomleft;
+	  border-top-left-radius: @topleft;
+	  -moz-background-clip: padding; -webkit-background-clip: padding-box; background-clip: padding-box; 
+	}
+
+// css3 gradients	
+	.gradient(@color: #F5F5F5, @start: #EEE, @stop: #FFF) {
+	  background: @color;
+	  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, @start), color-stop(1, @stop));
+	  background: -ms-linear-gradient(bottom, @start, @stop);
+	  background: -moz-linear-gradient(center bottom, @start 0%, @stop 100%);
+	}
+	
+	.dark-gradient(@color: #F5F5F5, @start: 42, @stop: 70) {
+	  background: @color;
+	  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(@start,@start,@start)), color-stop(1, rgb(@stop,@stop,@stop)));
+	  background: -ms-linear-gradient(bottom, rgb(@start,@start,@start) 0%, rgb(@start,@start,@start) 100%);
+	  background: -moz-linear-gradient(center bottom, rgb(@start,@start,@start) 0%, rgb(@stop,@stop,@stop) 100%);
+	}
+
+// css transition mixen	
+	.transition-all(@time: .25s, @ease: ease-in-out) {
+		-webkit-transition: all @time @ease;
+		-moz-transition: all @time @ease;
+		-o-transition: all @time @ease;
+		-ms-transition: all @time @ease;
+		transition: all @time @ease;
+	}
+	
+	.transition-opacity(@time: .25s, @ease: ease-in-out) {
+		-webkit-transition: opacity @time @ease;
+		-moz-transition: opacity @time @ease;
+		-o-transition: opacity @time @ease;
+		-ms-transition: opacity @time @ease;
+		transition: opacity @time @ease;
+	}
+	
+	.transition-color(@color-time: .25s, @color-ease: ease-in-out) {
+		-webkit-transition: color @color-time @color-ease;
+		-moz-transition: color @color-time @color-ease;
+		-o-transition: color @color-time @color-ease;
+		-ms-transition: color @color-time @color-ease;
+		transition: color @color-time @color-ease;
+	}
+	
+	.transition-width(@time: .50s, @ease: ease-in-out) {
+		-webkit-transition: width @time @ease;
+		-moz-transition: width @time @ease;
+		-o-transition: width @time @ease;
+		-ms-transition: width @time @ease;
+		transition: width @time @ease;
+	}
+	
+	.transition-height(@time: .50s, @ease: ease-in-out) {
+		-webkit-transition: height @time @ease;
+		-moz-transition: height @time @ease;
+		-o-transition: height @time @ease;
+		-ms-transition: height @time @ease;
+		transition: height @time @ease;
+	}
+	
+	
+/* 	-------------------------------------------------- Common tools and elements */
+
+.alignleft {
+	float: left;
+	margin: 0 20px 8px 0;
+}
+
+.alignright {
+	float: right;
+	margin: 0 0 8px 20px;
+}
+
+.aligncenter {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+pre {
+	width: 92%;
+	overflow: auto;
+	margin: 18px 0;
+	padding: 10px 8px 10px 12px;
+	color: @light-grey;
+	border: 1px solid @border-color;
+	border-left: 6px solid @secondary;
+	font: lighter 12px/20px Monaco,'MonacoRegular',monospace;
+	.rounded;
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -pre-wrap;
+	white-space: -o-pre-wrap;
+	word-wrap: break-word;
+}
+
+address {
+
+}
+
+/* call to action box */
+.ctab-box {
+	padding: 40px 60px;
+	background: @off-white;
+	.margin-bottom;
+}
+
+.ctab-box .button {
+	float: right;
+}
+
+
+
+/* -------------------------------------------------- Typography */
+
+body * {
+	word-wrap: break-word;
+}
+
+body {
+	color: @grey;
+	font-family: @sans;
+	font-size: @text-small;
+	font-size: 1.4rem;
+	line-height: @baseline;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: @sans;
+}
+
+a, a:visited {
+	color: @dark-grey;
+	.transition-color;
+}
+
+a:hover {
+	color: @dark-grey + 50%;
+}
+
+p {
+	line-height: @baseline;
+	font-size: @text-small;
+}
+
+a.button, a.button:visited {
+	color: @white;
+}
+
+a.button:active, a.button:hover {
+	color: @white;
+}
+
+
+/* -------------------------------------------------- main elements */
+
+.container {
+	padding: 0;
+}
+
+/* change this to change your whole layouts width */
+.row {
+	max-width: @max-container-width;
+}
+
+
+
+/* -------------------------------------------------- header styling */
+
+/* -- Pre header nav */ 
+
+#pre-header {
+	background: @off-white;
+}
+
+.pre-header-inner {
+}
+
+.pre-header-text {
+	float: left;
+}
+
+.pre-header-text a {
+	color: @off-white;
+	font-size: @text-small;
+	background: @accent-color;
+	padding: 0 10px;
+	display: block;
+}
+
+.pre-header-text a:hover {
+	background:  desaturate(@accent-color, 20%);
+}
+
+.pre-header-inner nav {
+	float: right;
+}
+.pre-header-inner ul {
+	display: inline;
+}
+
+.pre-header-inner ul > li {
+	float: left;
+	margin: 0;
+	font-size: @text-small;
+}
+
+.pre-header-inner ul > li > a {
+	margin-left: 10px;
+} 
+ 
+/* social icons for custom menu classes */
+#menu-pre-header .general {
+	line-height: 0
+}
+
+
+header {
+	padding: 0;
+}
+
+#inner-header {
+	margin: 60px 0 40px;
+}
+
+#logo a img {
+	.transition-opacity;
+	opacity: 1;
+}
+
+#logo a:hover img {
+	opacity: 0.6; 
+}
+
+#site-title {
+	font-size: @text-big;
+	text-transform: uppercase;
+	margin-bottom: 0;
+}
+
+#logo .subheader {
+	font-size: @text-small;
+	margin-bottom: 0;
+}
+
+/* -------------------------------------------------- navigation styling */
+
+#main-nav {
+}
+
+#main-nav .nav-bar {
+	border: 1px solid @border-color;
+	background: @off-white;
+	margin: 0;
+}
+
+#main-nav .nav-bar > li {
+
+}
+
+#main-nav .nav-bar > li.has-flyout > a.flyout-toggle span {
+	border-top-color: @grey;
+}
+
+#main-nav .nav-bar > li.has-flyout:hover > a.flyout-toggle span {
+	border-top-color: @light-grey;
+}
+
+/* navigation dropdown */
+
+#main-nav .nav-bar ul ul {
+	display: none;
+}
+
+#main-nav .nav-bar .flyout {
+	padding: 0;
+}
+
+#main-nav .nav-bar > li li {
+	margin-bottom: 0;
+}
+
+#main-nav .nav-bar > li li:last-child  a{
+	border-bottom: none;
+}
+
+#main-nav .nav-bar > li li a {
+	border-bottom: 1px solid @border-color;
+	padding: 15px 20px;
+	display: block;
+	.transition-all;
+}
+
+#main-nav .nav-bar > li li a:hover {
+	padding-left: 25px;
+	color: @secondary;
+}
+
+/* layout positioning */
+
+/* logo above navigation */
+#logo.layout-logo-above {
+	margin-bottom: 20px
+}
+
+#main-nav.layout-logo-above {
+}
+
+/* Logo on the left of nav */
+#logo.layout-logo-left {
+	float: left;
+}
+
+#main-nav.layout-logo-left {
+	float: right;
+}
+
+#main-nav.layout-logo-left .nav-bar {
+}
+
+/* layout center */
+#logo.layout-logo-center {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+#main-nav.layout-logo-center {
+
+}
+
+
+/* -------------------------------------------------- Pages */
+
+
+/* home page template */
+#welcome-wrapper {
+	.margin-bottom;
+	padding: 40px 0;
+}
+
+#home-hello {
+	
+}
+
+#home-hello h3 {
+	text-align: center;
+	text-transform: uppercase;
+	font-family: @webfont;
+	font-size: 68px;
+	line-height: 1,
+}
+
+#home-hello h3 span {
+	color: @accent-color; 
+	font-style: italic;
+}
+
+#bucket-wrapper {
+	.margin-bottom
+}
+.bucket-img {
+	margin-bottom: 10px;
+}
+.bucket-img img {
+	width: 100%;
+}
+.bucket-img a {
+	display: block;
+}
+
+/* -------------------------------------------------- loops */
+
+.post {
+	.margin-bottom;
+}
+
+.the-date {
+	font-size: @text-tiny;
+}
+
+.post-title {
+	color: @dark-grey;
+	font-size: @text-huge;
+	line-height: 1;
+	border-bottom: 1px solid @border-color;
+	margin-bottom: 15px;
+	padding-bottom: 5px;
+}
+
+.post-thumbnail {
+
+}
+
+.wp-caption {
+	max-width: 100%;
+	background: @off-white;
+	text-align: center;
+	padding-top: 5px;
+}
+
+.wp-caption img {
+	width: 98%;
+}
+
+.wp-caption-text {
+	padding: 2px 0;
+	text-align: center;
+}
+
+.post-meta {
+	background: lighten(@base-color, 90%);
+	padding: 5px;
+}
+
+.post-meta .comment-count {
+	font-weight: bold;
+}
+
+.paged-post {
+	padding: 20px;
+	border: 1px solid @border-color; 
+	.margin-bottom;
+}
+
+.paged-post a {
+	border-bottom: 1px dotted @border-color;
+}
+
+.paged-post span {
+	font-weight: bold;
+	color: @light-grey;
+}
+
+/* pagination */
+
+#pagination {
+	padding: 60px 0;
+}
+
+/* -------------------------------------------------- Comment form */
+
+#comments-list {
+	
+}
+
+#comments-list > ol, #trackbacks-list > ol  {
+	margin-left: 0;
+	list-style-type: none;
+}
+
+#comments-list > ol > li, #comments-list > ol ul.children > li {
+	margin-bottom: 20px;
+}
+
+#comments-list > ol ul.children {
+	margin-left: 20px;
+	margin-top: 20px;
+}
+
+#comments-list .comment-author > img {
+	float: left;
+	border: 1px solid @border-color;
+	padding: 2px;
+	margin: 0 20px 8px 0;
+	position: relative;
+}
+
+#comments-list .comment-content {
+	min-height:40px;
+	padding:5px;
+	position:relative;
+	background: @off-white;
+	border: 1px solid @off-white;
+	margin-top: 12px;
+}
+
+#comments-list .comment-content:after{
+	content:'';
+	display:block;
+	position:absolute;
+	top:-20px;
+	left:9px;
+	width:0;
+	height:0;
+	border-color: transparent transparent @off-white transparent;
+	border-style: solid;
+	border-width: 10px;
+}
+
+#comment {
+	width: 100%;
+}
+
+#respond label {
+	margin-bottom: 0;
+}
+
+#respond textarea {
+	margin-top: 0;
+}
+
+/* trackbacks and pingbacks */
+#trackbacks-list > ol .trackback, #trackbacks-list > ol .pingback {
+	padding: 20px 20px 0;
+	.border;
+	.rounded;
+}
+
+
+/* -------------------------------------------------- sidebar */
+
+#sidebar {
+
+}
+
+
+/* -------------------------------------------------- footer */
+
+footer {
+
+}
+
+#footer-widgets {
+	background: @off-white;
+}
+
+#footer-widgets .widget {
+	padding: 40px 0;
+}
+
+#sub-floor {
+	background: @dark;
+	padding: 20px 0 0; 
+	text-align: right;
+}
+
+/* 
+ 
+ Slider - styling
+
+	responsiveslider http://responsiveslides.com v1.32 by @viljamis 
+ 
+*/
+
+.slider-wrapper {
+	.margin-bottom;
+}
+
+.created-slider {
+	cursor: pointer;
+}
+
+.rslides {
+  position: relative;
+  list-style: none;
+  overflow: hidden;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.rslides li {
+  position: absolute;
+  display: none;
+  width: 100%;
+  left: 0;
+  top: 0;
+  margin-bottom: 0;
+}
+
+.rslides li:first-child {
+  position: relative;
+  display: block;
+  float: left;
+}
+
+.rslides .slider-img {
+	max-height: 500px;
+	overflow: hidden
+}
+
+.rslides img {
+	display: block;
+	height: auto;
+	float: left;
+	width: 100%;
+	border: 0;
+}
+
+.rslides .slider-img .slider-no-image {
+	min-height: 480px;
+	width: 100%;
+	background: #828876;
+}
+
+.rslides .caption {
+	display: block;
+	position: absolute;
+	z-index: 3;
+	width: 30%;
+	left: 25px;
+	top: 25px;
+	color: #fff;
+	padding: 20px 40px;
+	margin: 0;
+	max-width: none;
+}
+
+.rslides .caption h2 {
+	font-size: @text-huge;
+	color: #fff;
+	text-transform: uppercase;
+	line-height: 1;
+	white-space: pre-wrap;
+	text-shadow: 0 0 0 transparent,1px 5px 8px rgba(0, 0, 0, 0.1);
+}
+ 
+.rslides .caption p {
+	color: #fff;
+	font-size: 16px;
+}
+
+.rslides .caption .slider-link {
+
+}
+
+/* Slider navigation */ 
+
+.rslides_nav {
+	position: absolute;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	bottom: 0;
+	left: 0;
+	opacity: 0.7;
+	text-indent: -9999px;
+	overflow: hidden;
+	text-decoration: none;
+	height: 61px;
+	width: 38px;
+	background: transparent url(images/arrows.gif) no-repeat left top;
+	margin-top: -45px;
+	z-index: 80;
+ }
+ 
+.rslides_nav:active {
+   opacity: 1.0;
+}
+ 
+.rslides_nav.next {
+   left: 39px;
+   background-position: right top;
+   right: 0;
+}
+
+/* uncomment if you want large arrow navigation */
+/*
+.rslides_nav {
+  position: absolute;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  background: #fff url(images/arrow-left.gif) no-repeat 10% center;
+  opacity: 0;
+  filter: alpha(opacity=1);
+  width: 48%;
+  text-indent: -9999px;
+  overflow: hidden;
+  height: 100%;
+ }
+
+ .rslides_nav:hover {
+ 	opacity: 0.2;
+ }
+
+.rslides_nav.next {
+  left: auto;
+  right: 0;
+  background-image: url(images/arrow-right.gif);
+  background-position: 90% center;
+}
+*/
+
+.rslides_nav:focus {
+	outline: none;
+}
+
+/* Slider Tabs */ 
+.rslides_tabs {
+	background: rgba(255,255,255,0.4);
+	text-align: center;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	margin-bottom: 0;
+	padding: 25px 20px 0;
+	height: 36px;
+	opacity: 0;
+	.transition-all;
+}
+
+.created-slider:hover .rslides_tabs {
+	opacity: 1;
+	left: 78px
+}
+
+.rslides_tabs li {
+  display: inline;
+  float: none;
+  _float: left;
+  *float: left;
+  margin-right: 5px;
+  }
+
+.rslides_tabs a {
+  text-indent: -9999px;
+  overflow: hidden;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  background: #ccc;
+  background: rgba(0,0,0, .2);
+  display: inline-block;
+  _display: block;
+  *display: block;
+  -webkit-box-shadow: inset 0 0 2px 0 rgba(0,0,0,.1);
+  -moz-box-shadow: inset 0 0 2px 0 rgba(0,0,0,.1);
+  box-shadow: inset 0 0 2px 0 rgba(0,0,0,.1);
+  width: 9px;
+  height: 9px;
+  }
+
+.rslides_tabs .rslides_here a {
+  background: #222;
+  background: rgba(0,0,0, .8);
+  }
+
+/* mobile devices (tablets phones) */
+@media only screen and (max-width: 767px) {
+
+		/* pre header */
+		.pre-header-text {
+			float: none;
+			text-align: center;	
+		}
+		
+		.pre-header-inner nav {
+			float: none;
+			text-align: center;
+			padding: 10px 0;
+		}
+		
+		/* header layout tweaks */
+		#logo.layout-logo-left {
+			float: none;
+		}
+		
+		#main-nav.layout-logo-left {
+			margin-top: 20px;
+			float: none;
+		}
+		
+		#main-nav.layout-logo-left .nav-bar {
+		
+		}
+		
+		/* Post tweaks */
+		
+		/* slider tweaks */
+		.rslides {
+			padding-bottom: 62px; 
+			background: @off-white;
+		}
+		
+		.rslides .slider-img .slider-no-image {
+			min-height: 142px
+		}
+
+		.rslides .caption {
+			width: 90%;
+			top: 0;
+			left: 0;
+			padding: 20px;
+		}
+		
+		.rslides .caption h2 {
+			font-size: 28px;
+		}
+		
+		/* call to action box */
+		.ctab-box .button {
+			float: none;
+		}
+				
+}
+	
+/*common desktop */	
+@media only screen and (max-width: 1200px) {
+	.padded {
+		padding-left: @mobile-side-padding !important;
+		padding-right: @mobile-side-padding !important;
+	}
+}

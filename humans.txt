@@ -1,0 +1,34 @@
+/* humanstxt.org */
+                              
+/* TEAM */                           
+designer/developer: Jared Erickson      
+Site: http://jarederickson.com/about     
+Twitter: @alliswell
+Location: Atlanta, Georgia
+							
+/* THANKS */
+
+ZURB - for their awesome framework Foundation | http://foundation.zurb.com/
+
+vilijamis - for the responsive slider | http://responsive-slides.viljamis.com/
+
+Devin Price - WP options framework | https://github.com/devinsays/options-framework-theme
+
+Jared Atchison - Custom Meta and fields for Wordpress | https://github.com/jaredatch/Custom-Metaboxes-and-Fields-for-WordPress
+
+Less CSS - making css fun | http://lesscss.org/
+
+Less App - making Less quick(er) | http://incident57.com/less/
+
+Eric Martin - WordPress pagination (see functions.php)
+                       
+                            
+/* SITE */
+
+                            
+Last update: 06/01/2012
+
+/* SITE */
+  Standards: HTML5, CSS3
+  Components: jQuery, Reveal, Less, my brain
+  Software: Coda2, Photoshop, Less app
