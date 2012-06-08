@@ -1,4 +1,8 @@
-created
+Created WordPress theme
 =======
 
-Responsive WordPress starter theme built off ZURB foundation
+*v1*
+
+Responsive WordPress starter theme built off ZURB foundation for rapid theme development.
+
+http://foundation.zurb.com
