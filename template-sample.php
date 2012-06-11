@@ -1,7 +1,7 @@
 <?php 
 
-/*
-Template Name: Sample Grid template
+/** 
+* Template Name: Sample Grid template
 */
 
 ?>

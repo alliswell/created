@@ -1,5 +1,8 @@
 <?php
 
+// Include the custom navigation walker
+include_once( get_template_directory() . '/lib/Created_Nav_Walker.class.php' );
+
 // Add thumbnail support
 add_theme_support( 'post-thumbnails' );
 
@@ -9,9 +12,14 @@ add_theme_support( 'custom-background' );
 // Post types Possible additions | aside | gallery | link | image | quote | status | video | audio | chat
 add_theme_support( 'post-formats', array( 'image', 'link', 'video' ) );
 
+// Add theme support for Automatic Feed Links
+add_theme_support( 'automatic-feed-links' );
+
+// Custom Navigation
+add_theme_support('nav-menus');
 
 /*-----------------------------------------------------------------------------------*/
-/*	Include dependancys
+/*	Include Dependencies
 /*-----------------------------------------------------------------------------------*/
 
 // Add shortcodes shortcodes TODO
@@ -21,44 +29,47 @@ add_theme_support( 'post-formats', array( 'image', 'link', 'video' ) );
 	include options framework
 	using https://github.com/devinsays/options-framework-theme
 */
-if ( !function_exists( 'optionsframework_init' ) ) {
+if ( ! function_exists( 'optionsframework_init' ) ) {
+
 	define( 'OPTIONS_FRAMEWORK_DIRECTORY', get_template_directory_uri() . '/lib/admin/' );
 	require_once dirname( __FILE__ ) . '/lib/admin/options-framework.php';
+	
 }
 
-/* 
-	Add Custom meta Box scripts directs to the stylesheet 
-	directory so you can overide or add new ones in your childthme 
-*/
+// Add Custom Meta Box scripts directly to the stylesheet directory so you can overide or add new ones in your child theme
 include_once( get_template_directory() . '/lib/metabox/cmb.php' );
 
-/*
-	 Hide editor for template-home.php
-*/
-
-add_action( 'admin_init', 'hide_editor' );
+/** 
+ * Hide editor for template-home.php
+ */
 function hide_editor() {
+
 	// Get the Post ID.
 	$post_id = $_GET['post'] ? $_GET['post'] : $_POST['post_ID'] ;
-	if( !isset( $post_id ) ) return;
+	if( ! isset( $post_id ) ) return;
 
-	// Get the name of the Page Template file.
-	$template_file = get_post_meta($post_id, '_wp_page_template', true);
+	// Get the name of the page template file
+	$template_file = get_post_meta( $post_id, '_wp_page_template', true );
     
-    if($template_file == 'template-home.php'){ // edit the template name
+    if( 'template-home.php' == $template_file ) {
+    
     	remove_post_type_support('page', 'editor');
     	remove_post_type_support('page', 'thumbnail');
+    	
     }
+    
 }
+add_action( 'admin_init', 'hide_editor' );
 
 // Add some new image sizes
 if ( function_exists( 'add_image_size' ) ) { 
-	add_image_size( 'slider', 1170, 500, true ); // Slider image size
-	add_image_size( 'homepage-thumb', 220, 180, true ); //(cropped)
+
+	add_image_size( 'slider', 1170, 500, true ); 		// Slider image size
+	add_image_size( 'homepage-thumb', 220, 180, true ); // Cropped
+	
 } 
 
-
-// ------------------- Imports all theme style sheets
+// ------------------- Imports all theme stylesheets
 
 function created_add_style() {
 
@@ -76,31 +87,31 @@ function created_add_style() {
 	
 	// sniff out IE browsers and add a style sheet for them fools
 	global $is_IE;
-		if ( $is_IE ) {
-			wp_register_style( 'foundation_ie', get_template_directory_uri() . '/css/ie.css' );
-			wp_enqueue_style( 'foundation_ie' ); 
-		} // end if ie
+	if ( $is_IE ) {
+	
+		wp_register_style( 'foundation_ie', get_template_directory_uri() . '/css/ie.css' );
+		wp_enqueue_style( 'foundation_ie' ); 
+		
+	} // end if ie
 		
 	// Theme stylesheet
 	wp_register_style( 'created', get_stylesheet_directory_uri() . '/style.css' );
 	wp_enqueue_style( 'created' );
 	
 } // end add_style
-add_action( 'wp_enqueue_scripts', 'created_add_style' );
+add_action( 'wp_print_styles', 'created_add_style' );
 
+// ----------------- Imports JavaScipts
 
-
-// ----------------- Imports theme scripts like JS stuff ya know
+// nested comment reply script
+function comments_reply() {
+	if( get_option( 'thread_comments' ) )  {
+		wp_enqueue_script( 'comment-reply' );
+	}
+}
+add_action( 'comment_form_before', 'comments_reply' );
 
 function created_add_scripts() {
-
-	// nested comment reply script
-	function comments_reply() {
-		if( get_option( 'thread_comments' ) )  {
-			wp_enqueue_script( 'comment-reply' );
-		}
-	}
-	add_action( 'comment_form_before', 'comments_reply' );
 
 	// ZURB modernizer
 	wp_register_script( 'modernizer', get_template_directory_uri() . '/js/modernizr.foundation.js', array( 'jquery' ) );
@@ -123,78 +134,36 @@ add_action( 'wp_enqueue_scripts', 'created_add_scripts' );
 
 // add ie conditional html5 shim to header
 function add_ie_html5_shim () {
-    echo '<!--[if lt IE 9]>';
-    echo '<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>';
-    echo '<![endif]-->';
+    
+    $html =  '<!--[if lt IE 9]>';
+    $html .= 	'<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>';
+    $html .= '<![endif]-->';
+    
+    echo $html_shim;
 }
 add_action('wp_head', 'add_ie_html5_shim');
 
+/* ------------------------------------- slider */
 
-/* ------------------------------------- Nav Walker */
+// Slider using responsiveslider http://responsiveslides.com v1.32 by @viljamis
+function Slider() {
 
-// add class to custom menu
-class Created_Nav_Menu_Walker extends Walker_Nav_Menu { 
-function start_el(&$output, $item, $depth, $args) {
-		global $wp_query;
-		$indent = ( $depth ) ? str_repeat( "\t", $depth ) : '';
-
-		$class_names = $value = 'menu-list';
-
-		$classes = empty( $item->classes ) ? array() : (array) $item->classes;
-		$classes[] = '';
-
-		$class_names = join( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $item, $args ) );
-		$class_names = ' class="' . esc_attr( $class_names ) . '"';
-
-		$id = apply_filters( 'nav_menu_item_id', 'menu-item-'. $item->ID, $item, $args );
-		$id = strlen( $id ) ? ' id="' . esc_attr( $id ) . '"' : '';
-
-		$output .= $indent . '<li' . $id . $value . $class_names .'>';
-
-		$attributes  = ! empty( $item->attr_title ) ? ' title="'  . esc_attr( $item->attr_title ) .'"' : '';
-		$attributes .= ! empty( $item->target )     ? ' target="' . esc_attr( $item->target     ) .'"' : '';
-		$attributes .= ! empty( $item->xfn )        ? ' rel="'    . esc_attr( $item->xfn        ) .'"' : '';
-		$attributes .= ! empty( $item->url )        ? ' href="'   . esc_attr( $item->url        ) .'"' : '';
-
-    // add a class to the link
-    if( 0 == $depth){
-      $attributes .= ' class="main"';
-    }
-    
-		$item_output = $args->before;
-		$item_output .= '<a'. $attributes .'>';
-		$item_output .= $args->link_before . apply_filters( 'the_title', $item->title, $item->ID ) . $args->link_after;
-		$item_output .= '</a>';
-		$item_output .= $args->after;
-
-		$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
-	}
-
-}
-
-
-/* ------------------------------------- slider 
-
-Slider using responsiveslider http://responsiveslides.com v1.32 by @viljamis
-
- */
-
-add_action('init', 'Slider');
-
-function Slider(){
 	$Slider_args = array(
-		'label'	=> __('Slider'),
-		'singular_label' =>	__('Slide'),
-		'public'	=>	true,
-		'show_ui'	=>	true,
+		'label'				=> 	__( 'Slider' ),
+		'singular_label' 	=>	__( 'Slide' ),
+		'public'			=>	true,
+		'show_ui'			=>	true,
 		'capability_type'	=>	'post',
-		'hierarchical'	=>	false,
-		'rewrite'	=>	true,
-		'menu_icon' => get_template_directory_uri() .'/images/misc/icn-slider.png',
-		'supports'	=>	array('title', 'editor','page-attributes','custom-fields','thumbnail')
-		);
-		register_post_type('Slider', $Slider_args);
-}
+		'hierarchical'		=>	false,
+		'rewrite'			=>	true,
+		'menu_icon' 		=> 	get_template_directory_uri() . '/images/misc/icn-slider.png',
+		'supports'			=>	array( 'title', 'editor', 'page-attributes', 'custom-fields', 'thumbnail' )
+	);
+	
+	register_post_type( 'Slider', $Slider_args );
+	
+} 
+add_action( 'init', 'Slider' );
 
 function created_slider(){
 
@@ -205,65 +174,58 @@ function created_slider(){
 			
 			echo '<ul class="rslides">';
 		
-		while ( $loop->have_posts() ) : $loop->the_post();	
-		
-			global $post; 
+				while ( $loop->have_posts() ) : $loop->the_post();	
 				
-					echo '<li class="slider-content">';
-					
-					// the sliders image
-					
-						echo '<div class="slider-img clearfix">';
-					
-						 if ( has_post_thumbnail() ) { ?>
-					
-							<?php if(( get_post_meta($post->ID, "cr_slider_link", true))) { ?>
-									<a class="slider-link" href="<?php echo get_post_meta($post->ID, "cr_slider_link", true); ?>" title="<?php the_title(); ?>">
-										<?php the_post_thumbnail('slider'); ?>
-									</a>
-							<?php } else {
-									the_post_thumbnail('slider');
-								} // end else ?>
-					<?php } else {
-					
-						echo '<div class="slider-no-image"></div>';
+					global $post; 
 						
-					} // end else no image for slider
-					
-						echo '</div>'; // slider-img
-					
-											 					 
-						echo '<div class="caption">';
-						
-						// show captions	
-						if(( get_post_meta($post->ID, "cr_slider_show_caption", true))) {
-						
-							echo '<h2>';
-									the_title();
-							echo '</h2>';
+							echo '<li class="slider-content">';
 							
-							echo '<div class="hide-on-phones">';
-								the_content();
-							echo '</div>';
-						} // end caption
-						
-						echo '</div>'; // end caption	
-					echo '</li>';	
-		
-		endwhile;
+							// the sliders image
+							
+								echo '<div class="slider-img clearfix">';
+							
+								 if ( has_post_thumbnail() ) { ?>
+							
+									<?php if(( get_post_meta($post->ID, "cr_slider_link", true))) { ?>
+											<a class="slider-link" href="<?php echo get_post_meta($post->ID, "cr_slider_link", true); ?>" title="<?php the_title(); ?>">
+												<?php the_post_thumbnail('slider'); ?>
+											</a>
+									<?php } else {
+											the_post_thumbnail('slider');
+										} // end else ?>
+							<?php } else {
+							
+								echo '<div class="slider-no-image"></div>';
+								
+							} // end else no image for slider
+							
+								echo '</div>'; // slider-img
+							
+													 					 
+								echo '<div class="caption">';
+								
+								// show captions	
+								if(( get_post_meta($post->ID, "cr_slider_show_caption", true))) {
+								
+									echo '<h2>';
+											the_title();
+									echo '</h2>';
+									
+									echo '<div class="hide-on-phones">';
+										the_content();
+									echo '</div>';
+								} // end caption
+								
+								echo '</div>'; // end caption	
+							echo '</li>';	
+				
+				endwhile;
 		
 		echo '</ul>';
 		
 	echo '</div>'; // close created-slider
 		
-} // End function created_slider
-
-
-// Add theme support for Automatic Feed Links
-add_theme_support( 'automatic-feed-links' );
-
-// Custom Navigation
-add_theme_support('nav-menus');
+} // end created_slider
 
 if ( function_exists( 'register_nav_menus' ) ) {
 	register_nav_menus(
@@ -276,37 +238,38 @@ if ( function_exists( 'register_nav_menus' ) ) {
 }
 
 // Sidebars
-
 if (function_exists('register_sidebar')) {
 
 	// Right Sidebar
-
-	register_sidebar(array(
-		'name'=> 'Right Sidebar',
-		'id' => 'right_sidebar',
-		'before_widget' => '<li id="%1$s" class="widget %2$s">',
-		'after_widget' => '</li>',
-		'before_title' => '<h4>',
-		'after_title' => '</h4>',
-	));
+	register_sidebar(
+		array(
+			'name'			=> 'Right Sidebar',
+			'id' 			=> 'right_sidebar',
+			'before_widget' => '<li id="%1$s" class="widget %2$s">',
+			'after_widget' 	=> '</li>',
+			'before_title' 	=> '<h4>',
+			'after_title'	 => '</h4>',
+		)
+	);
 	
 	// Footer Sidebar
-	
-	register_sidebar(array(
-		'name'=> 'Footer Sidebar',
-		'id' => 'footer_sidebar',
-		'before_widget' => '<div id="%1$s" class="widget four columns %2$s">',
-		'after_widget' => '</div>',
-		'before_title' => '<h4>',
-		'after_title' => '</h4>',
-	));
+	register_sidebar(
+		array(
+			'name'			=> 'Footer Sidebar',
+			'id' 			=> 'footer_sidebar',
+			'before_widget' => '<div id="%1$s" class="widget four columns %2$s">',
+			'after_widget' 	=> '</div>',
+			'before_title' 	=> '<h4>',
+			'after_title'	 => '</h4>',
+		)
+	);
 }
 
 // Comments
 
 // Custom callback to list comments in the Foundation style
 function custom_comments($comment, $args, $depth) {
-  $GLOBALS['comment'] = $comment;
+  	$GLOBALS['comment'] = $comment;
     $GLOBALS['comment_depth'] = $depth;
   ?>
     <li id="comment-<?php comment_ID() ?>" <?php comment_class() ?>>
@@ -405,7 +368,8 @@ function commenter_link() {
  * @param array|string $args Optional. Override default arguments.
  * @return string HTML content, if not displaying.
  */
-function emm_paginate($args = null) {
+function emm_paginate( $args = null ) {
+
 	$defaults = array(
 		'page' => null, 'pages' => null, 
 		'range' => 3, 'gap' => 3, 'anchor' => 1,
@@ -418,39 +382,39 @@ function emm_paginate($args = null) {
 	$r = wp_parse_args($args, $defaults);
 	extract($r, EXTR_SKIP);
 
-	if (!$page && !$pages) {
+	if ( ! $page && ! $pages ) {
 		global $wp_query;
 
-		$page = get_query_var('paged');
-		$page = !empty($page) ? intval($page) : 1;
+		$page = get_query_var( 'paged' );
+		$page = ! empty( $page ) ? intval( $page ) : 1;
 
-		$posts_per_page = intval(get_query_var('posts_per_page'));
-		$pages = intval(ceil($wp_query->found_posts / $posts_per_page));
+		$posts_per_page = intval( get_query_var( 'posts_per_page' ) );
+		$pages = intval( ceil( $wp_query->found_posts / $posts_per_page ) );
 	}
 	
 	$output = "";
-	if ($pages > 1) {	
+	if ( $pages > 1 ) {	
 		$output .= "$before<li>$title</li>";
 		$ellipsis = "<li class='unavailable'>...</li>";
 
-		if ($page > 1 && !empty($previouspage)) {
-			$output .= "<li><a href='" . get_pagenum_link($page - 1) . "'>$previouspage</a></li>";
+		if ( $page > 1 &&  ! empty( $previouspage ) ) {
+			$output .= "<li><a href='" . get_pagenum_link( $page - 1 ) . "'>$previouspage</a></li>";
 		}
 		
 		$min_links = $range * 2 + 1;
-		$block_min = min($page - $range, $pages - $min_links);
-		$block_high = max($page + $range, $min_links);
-		$left_gap = (($block_min - $anchor - $gap) > 0) ? true : false;
-		$right_gap = (($block_high + $anchor + $gap) < $pages) ? true : false;
+		$block_min = min( $page - $range, $pages - $min_links );
+		$block_high = max( $page + $range, $min_links );
+		$left_gap = ( ( $block_min - $anchor - $gap ) > 0 ) ? true : false;
+		$right_gap = ( ( $block_high + $anchor + $gap ) < $pages ) ? true : false;
 
-		if ($left_gap && !$right_gap) {
+		if ( $left_gap && ! $right_gap ) {
 			$output .= sprintf('%s%s%s', 
 				emm_paginate_loop(1, $anchor), 
 				$ellipsis, 
 				emm_paginate_loop($block_min, $pages, $page)
 			);
 		}
-		else if ($left_gap && $right_gap) {
+		else if ( $left_gap && $right_gap ) {
 			$output .= sprintf('%s%s%s%s%s', 
 				emm_paginate_loop(1, $anchor), 
 				$ellipsis, 
@@ -459,7 +423,7 @@ function emm_paginate($args = null) {
 				emm_paginate_loop(($pages - $anchor + 1), $pages)
 			);
 		}
-		else if ($right_gap && !$left_gap) {
+		else if ( $right_gap && !$left_gap ) {
 			$output .= sprintf('%s%s%s', 
 				emm_paginate_loop(1, $block_high, $page),
 				$ellipsis,
@@ -470,14 +434,14 @@ function emm_paginate($args = null) {
 			$output .= emm_paginate_loop(1, $pages, $page);
 		}
 
-		if ($page < $pages && !empty($nextpage)) {
+		if ( $page < $pages && ! empty( $nextpage ) ) {
 			$output .= "<li><a href='" . get_pagenum_link($page + 1) . "'>$nextpage</a></li>";
 		}
 
 		$output .= $after;
 	}
 
-	if ($echo) {
+	if ( $echo ) {
 		echo $output;
 	}
 
@@ -497,22 +461,18 @@ function emm_paginate($args = null) {
  * @param int $max The last link page.
  * @return int $page Optional, default is 0. The current page.
  */
-function emm_paginate_loop($start, $max, $page = 0) {
+function emm_paginate_loop( $start, $max, $page = 0 ) {
+
 	$output = "";
-	for ($i = $start; $i <= $max; $i++) {
-		$output .= ($page === intval($i)) 
+	
+	for ( $i = $start; $i <= $max; $i++ ) {
+		$output .= ( $page === intval( $i ) ) 
 			? "<li class='current'><a href='#'>$i</a></li>" 
 			: "<li><a href='" . get_pagenum_link($i) . "'>$i</a></li>";
 	}
-	return $output;
-} 
-
-// -------------------------------------- theme options
-
-add_action( 'customize_register', 'created_customize_register' );
-function created_customize_register($wp_customize) {
 	
-} // end theme customization
-
+	return $output;
+	
+} 
 
 ?>
