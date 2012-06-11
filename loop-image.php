@@ -1,5 +1,5 @@
 <!-- Basic loop-->
-<article id="post-<?php the_ID() ?>" class="post format-<?php echo get_post_format(); ?>" >
+<article id="post-<?php the_ID() ?>" <?php post_class(); ?>>
 
 	<div class="pre-title-meta">
 		<span class="the-date"><?php the_time('F jS, Y') ?></span>
