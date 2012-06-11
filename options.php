@@ -175,19 +175,21 @@ add_action('optionsframework_custom_scripts', 'optionsframework_custom_scripts')
 function optionsframework_custom_scripts() { ?>
 
 <script type="text/javascript">
-jQuery(document).ready(function($) {
-
-	$('#display_pre_header_text').click(function() {
-  		$('#section-pre_header_text').fadeToggle(400);
-  		$('#section-pre_header_url').fadeToggle(400);
+(function($) {
+	$(function() {
+	
+		$('#display_pre_header_text').click(function() {
+	  		$('#section-pre_header_text').fadeToggle(400);
+	  		$('#section-pre_header_url').fadeToggle(400);
+		});
+	
+		if ($('#display_pre_header_text:checked').val() !== undefined) {
+			$('#section-pre_header_text').show();
+			$('#section-pre_header_url').show();
+		}
+	
 	});
-
-	if ($('#display_pre_header_text:checked').val() !== undefined) {
-		$('#section-pre_header_text').show();
-		$('#section-pre_header_url').show();
-	}
-
-});
+})(jQuery);
 </script>
 
 <?php

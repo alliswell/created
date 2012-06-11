@@ -1,8 +1,11 @@
-# Created WordPress theme #
-=======
+# Created
 
-## v1.0 ##
+A WordPress Theme for designers based on the [ZURB Foundation](http://foundation.zurb.com) for rapid theme development.
 
-Responsive WordPress starter theme built off ZURB foundation ( http://foundation.zurb.com ) for rapid theme development.
+## Demo
 
-### View demo here http://lessmade.com/dev/created ###
+* [View Here](http://lessmade.com/dev/created)
+
+## Releases
+
+_1.0 (06/08/2012)_
