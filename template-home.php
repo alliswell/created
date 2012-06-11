@@ -1,10 +1,7 @@
 <?php 
-/*
-
-Template Name: Home w/ slider
-
-*/
-
+/** 
+ * Template Name: Home w/ slider
+ */
 ?>
 
 <?php get_header(); ?>

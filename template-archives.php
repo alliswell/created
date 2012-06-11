@@ -1,11 +1,9 @@
 <?php 
-/*
-Template Name: Archives
-*/
-
-get_header();
-
+/**
+ * Template Name: Archives
+ */
 ?>
+<?php get_header(); ?>
 
 <!-- TODO - sorry did not get around to styling this yet -->
 
